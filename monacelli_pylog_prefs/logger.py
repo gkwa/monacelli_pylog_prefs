@@ -3,9 +3,7 @@ import logging.config
 import logging.handlers
 
 
-def setup(
-    filename="logger.log", stream_level=logging.WARNING, file_level=logging.DEBUG
-):
+def setup(filename=None, stream_level=logging.WARNING, file_level=logging.DEBUG):
     format_file = "[%(asctime)s] p%(process)s {%(filename)s:%(lineno)d} %(levelname)s - %(message)s"
     formatter_file = logging.Formatter(format_file)
     file_handler = logging.handlers.RotatingFileHandler(
@@ -21,8 +19,12 @@ def setup(
     stream_handler.setFormatter(formatter_stream)
     stream_handler.setLevel(stream_level)
 
+    handlers = [stream_handler]
+    if filename:
+        handlers.append(file_handler)
+
     logging.basicConfig(
         level=logging.DEBUG,
-        handlers=[file_handler, stream_handler],
+        handlers=handlers,
     )
     logging.config.dictConfig({"version": 1, "disable_existing_loggers": True})
