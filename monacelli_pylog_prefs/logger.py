@@ -44,7 +44,7 @@ def setup(filename=None, stream_level=logging.WARNING, file_level=logging.DEBUG)
         handlers.append(hf)
 
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=file_level,
         handlers=handlers,
     )
     logging.config.dictConfig({"version": 1, "disable_existing_loggers": True})
