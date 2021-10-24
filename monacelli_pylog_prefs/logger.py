@@ -3,7 +3,7 @@ import logging.config
 import logging.handlers
 
 
-def get_file_handler(filename):
+def get_file_handler(filename, file_level):
 
     if not filename:
         return None
@@ -20,7 +20,7 @@ def get_file_handler(filename):
     return file_handler
 
 
-def get_stream_handler():
+def get_stream_handler(stream_level):
     format_stream = "{%(filename)s:%(lineno)d} %(levelname)s - %(message)s"  # console
     formatter_stream = logging.Formatter(format_stream)
     stream_handler = logging.StreamHandler()
@@ -34,8 +34,8 @@ def setup(filename=None, stream_level=logging.WARNING, file_level=logging.DEBUG)
 
     handlers = []
 
-    hs = get_stream_handler()
-    hf = get_file_handler(filename)
+    hs = get_stream_handler(stream_level)
+    hf = get_file_handler(filename, file_level)
 
     if hs:
         handlers.append(hs)
@@ -44,7 +44,7 @@ def setup(filename=None, stream_level=logging.WARNING, file_level=logging.DEBUG)
         handlers.append(hf)
 
     logging.basicConfig(
-        level=file_level,
+        level=logging.DEBUG,
         handlers=handlers,
     )
     logging.config.dictConfig({"version": 1, "disable_existing_loggers": True})
